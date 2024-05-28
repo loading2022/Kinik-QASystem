@@ -1,29 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>精立數位 JinZ Digital</title>
+    <title>中國砂輪企業股份有限公司</title>
     <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../static/all.css">
 </head>
 <body>
     <header>
-        <img src="../images/digital_logo.png" alt="logo">
-        <h1>精立數位 JinZ Digital 問答系統</h1>
+        <img src="https://www.kinik.com.tw/zh-tw/index.html" alt="logo">
+        <h1>中國砂輪智能客服</h1>
     </header>
     <div class="wrap">
-        <div class="left-navbar"> 
-            <!--  
-            <select id="folders" name="folders" onchange="sendFolder()">
-                <option value="new">new</option>
-                <option value="0319">0319</option>
-                <option value="0320">0320</option>
-                <option value="test1">test1</option>
-            </select>
-            <div class="similar-area">
-                <h2>相似問題</h2>
-                <ul class="similar"></ul>
-            </div>-->
-        </div>
+        <div class="left-navbar"></div>
         <div class="chat-area">
             <div class="chat-history">
             </div>
@@ -37,28 +25,6 @@
         
     </div>
     <script>
-        /*
-        function sendFolder(){
-            var selectedFolder = document.getElementById("folders").value;
-            
-            document.querySelector(".chat-history").innerHTML = "";
-            fetch('/selected_folder', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ folder: selectedFolder })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("Error:",error);
-            });
-        }
-        */
         function copyText(text) {
             navigator.clipboard.writeText(text);
         }

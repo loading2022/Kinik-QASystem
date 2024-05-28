@@ -1,0 +1,8 @@
+Flask
+langchain
+openai
+faiss-cpu
+opencc-python-reimplemented
+tiktoken
+langchain-openai
+langchain-community

@@ -1,30 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>中國砂輪企業股份有限公司</title>
+    <title>元智大學 YuanZe University</title>
     <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="../static/all.css">
 </head>
 <body>
     <header>
-        <img src="https://www.kinik.com.tw//images/logo.png" alt="logo">
-        <h1>中國砂輪智能客服</h1>
+        <h1>元智大學 YuanZe University</h1>
     </header>
-    <div class="wrap">
-        <div class="left-navbar"></div>
+    <main class="wrap">
         <div class="chat-area">
-            <div class="chat-history">
-            </div>
+            <div class="chat-history"></div>
             <form action="/get_response" method = "post" accept-charset="UTF-8" id="chat-form">
                 <input type="text" class="user-input" placeholder="Ask a question..." name="user_input">
                 <button type="button" id = "startBtn"><i class="fa-solid fa-microphone"></i></button>
                 <button type="button" id = "stopBtn"><i class="fas fa-microphone-slash"></i></button>
                 <button type="submit" class="send-button">Send</button>
             </form>
-        </div>
-        
-    </div>
+        </div>    
+    </main>
     <script>
+        /*
+        function sendFolder(){
+            var selectedFolder = document.getElementById("folders").value;
+            
+            document.querySelector(".chat-history").innerHTML = "";
+            fetch('/selected_folder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ folder: selectedFolder })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error:",error);
+            });
+        }
+        */
         function copyText(text) {
             navigator.clipboard.writeText(text);
         }
@@ -122,14 +140,15 @@
                         chatHistory.removeChild(loader);
                         const assistantMessage = data.response;
                         assistantMessageDiv.classList.add("message", "assistant");
-                        const escapedAssistantMessage = assistantMessage.replace(/\n/g, " ");
+                        const escapedAssistantMessage = assistantMessage.replace(/\n/g, "<br>");
+                        //revisedAssistantMessage = escapedAssistantMessage.replace(/\**/g, "<b>");
                         let timestamp = Date.now();
                         let date = new Date(timestamp);
                         let hours = date.getHours().toString().padStart(2, '0');
                         let minutes = date.getMinutes().toString().padStart(2, '0');
                         let formattedDate = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${hours}:${minutes}:${date.getSeconds()}`;
                        
-                        assistantMessageDiv.innerHTML =" <i class='fa-solid fa-comment'></i><p id='res-mes'>"+assistantMessage+"<br>"+formattedDate+"</p><i class='far fa-copy' onclick='copyText(\""+escapedAssistantMessage+"\")'></i>";
+                        assistantMessageDiv.innerHTML =" <i class='fa-solid fa-comment'></i><p id='res-mes'>"+escapedAssistantMessage+"<br>"+formattedDate+"</p><i class='far fa-copy' onclick='copyText(\""+escapedAssistantMessage+"\")'></i>";
                         chatHistory.appendChild(assistantMessageDiv);
                         // 滾動到最新的回答
                         assistantMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });

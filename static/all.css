@@ -61,17 +61,16 @@ body {
     padding: 20px;
 }
 
+header img{
+	position:absolute;
+	top:50px;
+	left:100px;
+}
 h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 30px;
     font-weight: bolder;
-    display:block;
-    background:url('https://www.kinik.com.tw//images/logo.png') no-repeat;
-    width:150px;
-    text-indent:101%; 
-    overflow:hidden;
-    white-space:nowrap; 
 }
 
 .wrap {

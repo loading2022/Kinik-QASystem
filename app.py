@@ -13,7 +13,11 @@ from openai import OpenAI
 client = OpenAI()
 
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
+openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+openai.api_type = "azure"
+openai.api_version = os.getenv("AZURE_OPENAI_MODEL") 
+
 app = Flask(__name__)
 
 class NamedBytesIO(io.BytesIO):

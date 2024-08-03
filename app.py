@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import AzureOpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain_community.callbacks import get_openai_callback
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from opencc import OpenCC
 
 import openai
@@ -37,7 +37,7 @@ def get_response():
     if not user_input:
         return jsonify({'error': 'No user input provided'})
     if user_input:
-        embeddings = OpenAIEmbeddings()
+        embeddings = AzureOpenAIEmbeddings()
         dir_path="./db/"
         new_db = None
         for db in os.listdir(dir_path):
@@ -50,8 +50,8 @@ def get_response():
         #print(new_db.docstore._dict)
         
         docs = new_db.similarity_search(user_input)
-        llm = ChatOpenAI(
-            model_name="gpt-4o",
+        llm = AzureChatOpenAI(
+            azure_deployment="gpt-4o",
             temperature=0.2
         )
 

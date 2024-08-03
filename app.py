@@ -51,7 +51,7 @@ def get_response():
         
         docs = new_db.similarity_search(user_input)
         llm = AzureChatOpenAI(
-            azure_deployment="gpt-4o",
+            azure_deployment="kinik-gpt-4o",
             temperature=0.2
         )
 

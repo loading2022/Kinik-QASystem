@@ -10,8 +10,6 @@ from opencc import OpenCC
 import openai
 import io
 from openai import OpenAI
-client = OpenAI()
-
 
 openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")

@@ -11,10 +11,11 @@ import openai
 import io
 from openai import OpenAI
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_BASE_URL = os.getenv("AZURE_OPENAI_ENDPOINT")
 openai.api_type = "azure"
-openai.api_version = os.getenv("AZURE_OPENAI_MODEL") 
+OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_MODEL") 
+OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
 app = Flask(__name__)
 
@@ -51,8 +52,10 @@ def get_response():
         
         docs = new_db.similarity_search(user_input)
         llm = AzureChatOpenAI(
-            azure_deployment="kinik-gpt-4o",
-            temperature=0.2
+            azure_endpoint=OPENAI_API_BASE_URL,
+            openai_api_version=OPENAI_API_VERSION,
+            azure_deployment=OPENAI_DEPLOYMENT_NAME,
+            openai_api_key=OPENAI_API_KEY,
         )
 
         chain = load_qa_chain(llm, chain_type="stuff")

@@ -6,14 +6,12 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import AzureChatOpenAI
 from opencc import OpenCC
-
-import openai
 import io
 from openai import OpenAI
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_API_BASE_URL = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_type = "azure"
+#openai.api_type = "azure"
 OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_MODEL") 
 OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 

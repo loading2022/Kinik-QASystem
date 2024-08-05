@@ -52,10 +52,11 @@ def get_response():
         
         docs = new_db.similarity_search(user_input)
         llm = AzureChatOpenAI(
+            deployment_name=OPENAI_DEPLOYMENT_NAME,
+            model_name="gpt-4o",
+            api_key=OPENAI_API_KEY,
             azure_endpoint=OPENAI_API_BASE_URL,
-            openai_api_version=OPENAI_API_VERSION,
-            azure_deployment=OPENAI_DEPLOYMENT_NAME,
-            openai_api_key=OPENAI_API_KEY,
+            api_version=OPENAI_API_VERSION
         )
 
         chain = load_qa_chain(llm, chain_type="stuff")

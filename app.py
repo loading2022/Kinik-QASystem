@@ -1,20 +1,19 @@
 from flask import Flask, render_template, request, jsonify
 import os
-from langchain_openai import AzureOpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
 from langchain.chains.question_answering import load_qa_chain
 from langchain_community.callbacks import get_openai_callback
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import ChatOpenAI
 from opencc import OpenCC
+
+import openai
 import io
 from openai import OpenAI
+client = OpenAI()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_API_BASE_URL = os.getenv("AZURE_OPENAI_ENDPOINT")
-#openai.api_type = "azure"
-OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_MODEL") 
-OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
+openai.api_key = os.getenv('OPENAI_API_KEY')
 app = Flask(__name__)
 
 class NamedBytesIO(io.BytesIO):
@@ -36,26 +35,21 @@ def get_response():
     if not user_input:
         return jsonify({'error': 'No user input provided'})
     if user_input:
-        embeddings = AzureOpenAIEmbeddings()
+        embeddings = OpenAIEmbeddings()
         dir_path="./db/"
         new_db = None
         for db in os.listdir(dir_path):
             print(f"db name:{db}")
-            db=FAISS.load_local(os.path.join(dir_path,db),embeddings, allow_dangerous_deserialization=True)
+            db=Chroma(persist_directory=os.path.join(dir_path,db), embedding_function=embeddings)
             if new_db is None:
                 new_db = db
-            else:
-                new_db.merge_from(db)
-        #print(new_db.docstore._dict)
+            #else:
+            #    new_db.merge_from(db)
         
         docs = new_db.similarity_search(user_input)
-        llm = AzureChatOpenAI(
-            deployment_name=OPENAI_DEPLOYMENT_NAME,
-            #model_name="gpt-4o",
-            api_key=OPENAI_API_KEY,
-            azure_endpoint=OPENAI_API_BASE_URL,
-            api_version=OPENAI_API_VERSION,
-            temperature=0
+        llm = ChatOpenAI(
+            model_name="gpt-4o",
+            temperature=0.2
         )
 
         chain = load_qa_chain(llm, chain_type="stuff")
@@ -64,7 +58,7 @@ def get_response():
             response = chain.invoke({"input_documents": docs,"question":user_input}, return_only_outputs=True)
         cc = OpenCC('s2t')
         answer=cc.convert(response['output_text'])
-        
+        print(answer)
         chat_history.append({'user': user_input, 'assistant': response['output_text']})
         return jsonify({'response': answer})
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import os
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain_community.callbacks import get_openai_callback
 from langchain_openai import ChatOpenAI
@@ -40,11 +40,12 @@ def get_response():
         new_db = None
         for db in os.listdir(dir_path):
             print(f"db name:{db}")
-            db=Chroma(persist_directory=os.path.join(dir_path,db), embedding_function=embeddings)
+            db=FAISS.load_local(os.path.join(dir_path,db),embeddings, allow_dangerous_deserialization=True)
             if new_db is None:
                 new_db = db
-            #else:
-            #    new_db.merge_from(db)
+            else:
+                new_db.merge_from(db)
+        #print(new_db.docstore._dict)
         
         docs = new_db.similarity_search(user_input)
         llm = ChatOpenAI(
